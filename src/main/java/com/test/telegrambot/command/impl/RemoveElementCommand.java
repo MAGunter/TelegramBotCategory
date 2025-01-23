@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component
 @RequiredArgsConstructor
-public class AddElementCommand implements Command {
+public class RemoveElementCommand implements Command {
 
     private final CategoryService categoryService;
 
@@ -18,26 +18,17 @@ public class AddElementCommand implements Command {
     public void execute(Update update, AbsSender sender){
         String chatId = update.getMessage().getChatId().toString();
         String message = update.getMessage().getText();
-        String parameters = message.replace("/addElement ", "").trim();
-        String defaultMessage = "Вы неверно ввели команду или название категорий. " +
-                "Пример: /addElement <категория> или addElement <категория> <родитель категорий>";
+        String parameters = message.replace("/removeElement ", "").trim();
+        String defaultMessage = "Вы неверно ввели команду или название категории. " +
+                "Пример: /removeElement <категория>";
 
         String response;
         if(parameters.isEmpty()){
             response = defaultMessage;
-        }else{
-            String[] args = parameters.split(" ");
-            if(args.length == 1){
-                response = categoryService.addCategory(args[0]);
-            }else if(args.length == 2){
-                response = categoryService.addCategory(args[0], args[1]);
-            }else{
-                response = defaultMessage;
-            }
         }
+        response = categoryService.removeCategory(parameters);
 
         SendMessage send = new SendMessage(chatId, response);
-
         try{
             sender.execute(send);
         }catch(Exception e){

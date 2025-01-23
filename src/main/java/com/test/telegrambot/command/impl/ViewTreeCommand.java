@@ -1,24 +1,22 @@
 package com.test.telegrambot.command.impl;
 
 import com.test.telegrambot.command.Command;
+import com.test.telegrambot.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component
-public class HelpCommand implements Command {
+@RequiredArgsConstructor
+public class ViewTreeCommand implements Command {
+    private final CategoryService categoryService;
+
     @Override
     public void execute(Update update, AbsSender sender){
         String chatId = update.getMessage().getChatId().toString();
-        String message = """
-                Доступные команды:
-                /viewTree - Показать дерево категорий
-                /addElement <название> - Добавить корневой элемент
-                /addElement <родитель> <дочерний> - Добавить дочерний элемент
-                /removeElement <название> - Удалить элемент
-                /help - Показать список команд
-                """;
+        String message = categoryService.viewTree();
 
         SendMessage send = new SendMessage(chatId, message);
         try{

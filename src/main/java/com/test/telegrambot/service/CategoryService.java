@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 public interface CategoryService {
     String addCategory(String name, String parent);
     String addCategory(String name);
+    String viewTree();
+    String removeCategory(String name);
 }
