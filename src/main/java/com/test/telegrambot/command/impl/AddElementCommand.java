@@ -20,10 +20,10 @@ public class AddElementCommand implements Command {
         String message = update.getMessage().getText();
         String parameters = message.replace("/addElement ", "").trim();
         String defaultMessage = "Вы неверно ввели команду или название категорий. " +
-                "Пример: /addElement <категория> или addElement <категория> <родитель категорий>";
+                "Пример: /addElement <категория> или addElement <родитель категорий> <категория>";
 
         String response;
-        if(parameters.isEmpty()){
+        if(parameters.isEmpty() || message.equals("/addElement")){
             response = defaultMessage;
         }else{
             String[] args = parameters.split(" ");

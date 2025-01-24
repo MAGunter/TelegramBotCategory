@@ -1,9 +1,6 @@
 package com.test.telegrambot.command;
 
-import com.test.telegrambot.command.impl.AddElementCommand;
-import com.test.telegrambot.command.impl.HelpCommand;
-import com.test.telegrambot.command.impl.RemoveElementCommand;
-import com.test.telegrambot.command.impl.ViewTreeCommand;
+import com.test.telegrambot.command.impl.*;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -25,6 +22,8 @@ public class CommandRegistry {
                 commands.put("/viewTree", command);
             } else if(command instanceof RemoveElementCommand){
                 commands.put("/removeElement", command);
+            } else if(command instanceof DownloadCommand){
+                commands.put("/download", command);
             }
         }
     }

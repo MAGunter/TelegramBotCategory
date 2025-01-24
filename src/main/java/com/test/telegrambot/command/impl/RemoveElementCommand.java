@@ -23,10 +23,11 @@ public class RemoveElementCommand implements Command {
                 "Пример: /removeElement <категория>";
 
         String response;
-        if(parameters.isEmpty()){
+        if(parameters.isEmpty() || message.equals("/removeElement")){
             response = defaultMessage;
+        }else{
+            response = categoryService.removeCategory(parameters);
         }
-        response = categoryService.removeCategory(parameters);
 
         SendMessage send = new SendMessage(chatId, response);
         try{

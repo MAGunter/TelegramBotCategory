@@ -14,10 +14,11 @@ public class HelpCommand implements Command {
         String message = """
                 Доступные команды:
                 /viewTree - Показать дерево категорий
-                /addElement <название> - Добавить корневой элемент
-                /addElement <родитель> <дочерний> - Добавить дочерний элемент
-                /removeElement <название> - Удалить элемент
+                /addElement <название категорий> - Добавить корневой элемент
+                /addElement <старшая категория> <категория> - Добавить дочернюю категорию
+                /removeElement <название категорий> - Удалить элемент
                 /help - Показать список команд
+                /download - Доступ к дереву категорий через excel | формат в виде .xlsx -> categories.xlsx
                 """;
 
         SendMessage send = new SendMessage(chatId, message);
