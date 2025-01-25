@@ -1,5 +1,6 @@
 package com.test.telegrambot.command;
 
+import com.test.telegrambot.command.impl.UploadCommand;
 import com.test.telegrambot.config.BotConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,12 +8,14 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+
 @Service
 @RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final BotConfig botConfig;
     private final CommandRegistry commandRegistry;
+    private final UploadCommand uploadCommand;
 
     @Override
     public String getBotUsername() {
@@ -35,6 +38,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             }else{
                 SendMsg(update.getMessage().getChatId().toString());
             }
+        }else if(update.hasMessage() && update.getMessage().hasDocument()){
+            uploadCommand.execute(update, this);
         }
     }
 
@@ -42,8 +47,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage send = new SendMessage(chatId, "Неизвестная команда, напишите /help для помощи");
         try{
             execute(send);
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

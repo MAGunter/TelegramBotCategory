@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 @Component
 @RequiredArgsConstructor
 public class DownloadCommand implements Command {
+
     private final CategoryExcelService categoryExcelService;
 
     @Override
@@ -26,7 +27,7 @@ public class DownloadCommand implements Command {
             try{
                 sender.execute(emptyMsg);
             }catch(TelegramApiException e){
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         SendDocument sendDocument = new SendDocument();
@@ -36,7 +37,7 @@ public class DownloadCommand implements Command {
         try{
             sender.execute(sendDocument);
         }catch(TelegramApiException e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

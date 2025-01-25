@@ -24,6 +24,8 @@ public class CommandRegistry {
                 commands.put("/removeElement", command);
             } else if(command instanceof DownloadCommand){
                 commands.put("/download", command);
+            } else if(command instanceof UploadCommand){
+                commands.put("/upload", command);
             }
         }
     }

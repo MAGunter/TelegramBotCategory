@@ -33,7 +33,7 @@ public class RemoveElementCommand implements Command {
         try{
             sender.execute(send);
         }catch(Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

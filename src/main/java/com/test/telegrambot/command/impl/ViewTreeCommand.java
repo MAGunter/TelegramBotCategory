@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 @Component
 @RequiredArgsConstructor
 public class ViewTreeCommand implements Command {
+
     private final CategoryService categoryService;
 
     @Override
@@ -22,7 +23,7 @@ public class ViewTreeCommand implements Command {
         try{
             sender.execute(send);
         }catch(Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

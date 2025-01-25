@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component
 public class HelpCommand implements Command {
+
     @Override
     public void execute(Update update, AbsSender sender){
         String chatId = update.getMessage().getChatId().toString();
@@ -19,13 +20,16 @@ public class HelpCommand implements Command {
                 /removeElement <название категорий> - Удалить элемент
                 /help - Показать список команд
                 /download - Доступ к дереву категорий через excel | формат в виде .xlsx -> categories.xlsx
+                /upload - Загрузить дерево категорий через excel | формат в виде .xlsx
+                Важно! При загрузке категорий через excel, файл должен содержать только уникальные значения (не поддерживает дупликаты),
+                в противном случае возможно нарушение структуры дерева категорий.
                 """;
 
         SendMessage send = new SendMessage(chatId, message);
         try{
             sender.execute(send);
         }catch(Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

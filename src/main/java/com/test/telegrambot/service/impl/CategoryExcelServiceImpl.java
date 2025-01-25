@@ -11,7 +11,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.FileInputStream;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -24,12 +25,12 @@ public class CategoryExcelServiceImpl implements CategoryExcelService {
         try (Workbook workbook = new XSSFWorkbook();
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
-            Sheet sheet = workbook.createSheet("Category Tree");
+            Sheet sheet = workbook.createSheet("Дерево Категорий");
             List<Category> categories = categoryRepository.findAll();
             int rowNum = 0;
 
             if(categories.isEmpty()){
-                System.out.println("No categories found");
+                System.out.println("Не смогли найти категории");
                 return new byte[0];
             }
 
@@ -44,14 +45,51 @@ public class CategoryExcelServiceImpl implements CategoryExcelService {
             workbook.write(outputStream);
             return outputStream.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
-            return new byte[0];
+            throw new RuntimeException(e);
         }
     }
 
 
     @Override
-    public void importTreeToExcel(InputStream input) {
-        
+    public void importTreeToExcel(String excelFile) {
+        try (FileInputStream inputStream = new FileInputStream(excelFile);
+             Workbook workbook = new XSSFWorkbook(inputStream)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> iterator = sheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row currentRow = iterator.next();
+                String categoryName = currentRow.getCell(0).getStringCellValue();
+                String parentCategoryName = null;
+
+                if (currentRow.getCell(1) != null) {
+                    switch (currentRow.getCell(1).getCellType()) {
+                        case STRING:
+                            parentCategoryName = currentRow.getCell(1).getStringCellValue();
+                            break;
+                        case FORMULA:
+                            parentCategoryName = currentRow.getCell(1).getCellFormula();
+                            break;
+                        default:
+                            throw new IllegalStateException("Неожиданный тип ячейки: " + currentRow.getCell(1).getCellType());
+                    }
+                }
+
+                Category category = new Category();
+                category.setName(categoryName);
+
+                if (parentCategoryName != null) {
+                    Category parentCategory = categoryRepository.findByName(parentCategoryName)
+                            .orElse(null);
+                    category.setParent(parentCategory);
+                }
+
+                categoryRepository.save(category);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
