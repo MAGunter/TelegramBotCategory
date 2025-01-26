@@ -1,6 +1,6 @@
 package com.test.telegrambot.config;
 
-import com.test.telegrambot.command.TelegramBot;
+import com.test.telegrambot.bot.TelegramBot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

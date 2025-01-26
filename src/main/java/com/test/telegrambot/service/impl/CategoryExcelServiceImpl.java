@@ -1,6 +1,7 @@
 package com.test.telegrambot.service.impl;
 
 import com.test.telegrambot.entity.Category;
+import com.test.telegrambot.exception.UnexpectedCellException;
 import com.test.telegrambot.repository.CategoryRepository;
 import com.test.telegrambot.service.CategoryExcelService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoryExcelServiceImpl implements CategoryExcelService {
+
     private final CategoryRepository categoryRepository;
 
     @Override
@@ -30,7 +32,6 @@ public class CategoryExcelServiceImpl implements CategoryExcelService {
             int rowNum = 0;
 
             if(categories.isEmpty()){
-                System.out.println("Не смогли найти категории");
                 return new byte[0];
             }
 
@@ -72,7 +73,7 @@ public class CategoryExcelServiceImpl implements CategoryExcelService {
                             parentCategoryName = currentRow.getCell(1).getCellFormula();
                             break;
                         default:
-                            throw new IllegalStateException("Неожиданный тип ячейки: " + currentRow.getCell(1).getCellType());
+                            throw new UnexpectedCellException("Неожиданный тип ячейки: " + currentRow.getCell(1).getCellType());
                     }
                 }
 

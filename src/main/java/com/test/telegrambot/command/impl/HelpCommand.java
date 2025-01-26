@@ -1,13 +1,17 @@
 package com.test.telegrambot.command.impl;
 
 import com.test.telegrambot.command.Command;
+import com.test.telegrambot.utility.MessageSender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component
+@RequiredArgsConstructor
 public class HelpCommand implements Command {
+
+    private final MessageSender messageSender;
 
     @Override
     public void execute(Update update, AbsSender sender){
@@ -25,11 +29,6 @@ public class HelpCommand implements Command {
                 в противном случае возможно нарушение структуры дерева категорий.
                 """;
 
-        SendMessage send = new SendMessage(chatId, message);
-        try{
-            sender.execute(send);
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
+        messageSender.sendMsg(chatId, message, sender);
     }
 }

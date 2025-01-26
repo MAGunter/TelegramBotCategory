@@ -1,13 +1,14 @@
-package com.test.telegrambot.command;
+package com.test.telegrambot.bot;
 
+import com.test.telegrambot.command.Command;
+import com.test.telegrambot.command.CommandRegistry;
 import com.test.telegrambot.command.impl.UploadCommand;
 import com.test.telegrambot.config.BotConfig;
+import com.test.telegrambot.utility.MessageSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     private final CommandRegistry commandRegistry;
     private final UploadCommand uploadCommand;
+    private final MessageSender messageSender;
 
     @Override
     public String getBotUsername() {
@@ -36,19 +38,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             if(cmd != null){
                 cmd.execute(update, this);
             }else{
-                SendMsg(update.getMessage().getChatId().toString());
+                messageSender.sendMsg(update.getMessage().getChatId().toString(), this);
             }
         }else if(update.hasMessage() && update.getMessage().hasDocument()){
             uploadCommand.execute(update, this);
-        }
-    }
-
-    private void SendMsg(String chatId){
-        SendMessage send = new SendMessage(chatId, "Неизвестная команда, напишите /help для помощи");
-        try{
-            execute(send);
-        }catch(Exception e) {
-            throw new RuntimeException(e);
         }
     }
 }

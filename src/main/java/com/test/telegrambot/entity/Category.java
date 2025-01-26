@@ -1,8 +1,7 @@
 package com.test.telegrambot.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,8 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name="categories")
 public class Category {
     @Id
@@ -19,7 +20,9 @@ public class Category {
     private String name;
     @ManyToOne
     @JoinColumn(name = "parent_id")
+    @ToString.Exclude
     private Category parent;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Category> children = new ArrayList<>();
 }

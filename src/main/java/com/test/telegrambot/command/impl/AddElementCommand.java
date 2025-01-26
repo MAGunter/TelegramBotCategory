@@ -2,9 +2,9 @@ package com.test.telegrambot.command.impl;
 
 import com.test.telegrambot.command.Command;
 import com.test.telegrambot.service.CategoryService;
+import com.test.telegrambot.utility.MessageSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
@@ -13,9 +13,11 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 public class AddElementCommand implements Command {
 
     private final CategoryService categoryService;
+    private final MessageSender messageSender;
 
     @Override
     public void execute(Update update, AbsSender sender){
+
         String chatId = update.getMessage().getChatId().toString();
         String message = update.getMessage().getText();
         String parameters = message.replace("/addElement ", "").trim();
@@ -35,13 +37,6 @@ public class AddElementCommand implements Command {
                 response = defaultMessage;
             }
         }
-
-        SendMessage send = new SendMessage(chatId, response);
-
-        try{
-            sender.execute(send);
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
+        messageSender.sendMsg(chatId, response, sender);
     }
 }
