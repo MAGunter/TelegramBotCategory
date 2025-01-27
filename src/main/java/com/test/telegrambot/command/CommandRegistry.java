@@ -7,11 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Класс для регистрации команд
+ */
 @Component
 public class CommandRegistry {
 
     Map<String, Command> commands = new HashMap<>();
 
+    /**
+     * Конструктор, который регистрирует команды
+     * @param commandList список команд который мы получаем
+     */
     public CommandRegistry(List<Command> commandList) {
         for (Command command : commandList) {
             if (command instanceof AddElementCommand) {

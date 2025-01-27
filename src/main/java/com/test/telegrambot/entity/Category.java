@@ -6,6 +6,11 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Объект или сущность категории
+ * ToString.Exclude добавлен для избежания рекурсивного вызова toString()
+ * Builder.Default добавлен для загрузки пустого списка дочерних категорий
+ */
 @Entity
 @Data
 @NoArgsConstructor

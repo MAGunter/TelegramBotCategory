@@ -8,6 +8,22 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+/**
+ * Класс для реализации команды добавления элемента в категорию.
+ * <p>
+ * Этот класс обрабатывает команду добавления нового элемента (категории) в систему.
+ * Он может работать с двумя вариантами ввода:
+ * 1. Один параметр — добавление категории.
+ * 2. Два параметра — добавление подкатегории в указанную родительскую категорию.
+ * <p>
+ * Команда имеет формат:
+ * <ul>
+ * <li>/addElement <категория> — добавляет категорию;</li>
+ * <li>/addElement <старшая категория> <категория> — добавляет подкатегорию в указанную родительскую категорию;</li>
+ * </ul>
+ * Если введены некорректные параметры, выводится сообщение об ошибке.
+ * </p>
+ */
 @Component
 @RequiredArgsConstructor
 public class AddElementCommand implements Command {
@@ -15,6 +31,12 @@ public class AddElementCommand implements Command {
     private final CategoryService categoryService;
     private final MessageSender messageSender;
 
+    /**
+     * Выполняет команду добавления категории или подкатегории.
+     *
+     * @param update Обновление, содержащее информацию о сообщении.
+     * @param sender Объект, использующийся для отправки сообщений в чат.
+     */
     @Override
     public void execute(Update update, AbsSender sender){
 

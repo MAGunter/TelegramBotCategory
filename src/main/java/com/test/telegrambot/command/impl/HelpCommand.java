@@ -7,12 +7,25 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+/**
+ * Класс для реализации команды отображения списка доступных команд.
+ * <p>
+ * Этот класс обрабатывает команду помощи и отправляет пользователю список всех доступных команд бота.
+ * Команды включают действия с категориями, такие как просмотр дерева, добавление, удаление элементов, а также экспорт и импорт данных в формате Excel.
+ * </p>
+ */
 @Component
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
 
     private final MessageSender messageSender;
 
+    /**
+     * Выполняет команду помощи, отображая список доступных команд.
+     *
+     * @param update Обновление, содержащее информацию о сообщении.
+     * @param sender Объект, использующийся для отправки сообщений в чат.
+     */
     @Override
     public void execute(Update update, AbsSender sender){
         String chatId = update.getMessage().getChatId().toString();

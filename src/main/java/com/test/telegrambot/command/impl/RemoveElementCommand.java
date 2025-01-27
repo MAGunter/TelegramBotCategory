@@ -8,6 +8,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+/**
+ * Класс для реализации команды удаления элемента из дерева категорий.
+ * <p>
+ * Этот класс обрабатывает команду удаления категории из системы.
+ * Для удаления необходимо указать название категории, которую нужно удалить.
+ * Если введены некорректные параметры, пользователю будет отправлено сообщение с ошибкой.
+ * </p>
+ */
 @Component
 @RequiredArgsConstructor
 public class RemoveElementCommand implements Command {
@@ -15,6 +23,12 @@ public class RemoveElementCommand implements Command {
     private final CategoryService categoryService;
     private final MessageSender messageSender;
 
+    /**
+     * Выполняет команду удаления элемента (категории) из дерева категорий.
+     *
+     * @param update Обновление, содержащее информацию о сообщении.
+     * @param sender Объект, использующийся для отправки сообщений в чат.
+     */
     @Override
     public void execute(Update update, AbsSender sender){
         String chatId = update.getMessage().getChatId().toString();

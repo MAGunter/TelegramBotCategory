@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * Классический подход к созданию бота через TelegramLongPollingBot
+ */
 @Service
 @RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
@@ -29,6 +32,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         return botConfig.getBotToken();
     }
 
+    /**
+     * Обработка входящих сообщений
+     * @param update - объект, содержащий информацию о входящем сообщении
+     *               (текст, файл, фото, видео и т.д.)
+     */
     @Override
     public void onUpdateReceived(Update update){
         if(update.hasMessage() && update.getMessage().hasText()){

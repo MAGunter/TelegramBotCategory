@@ -16,12 +16,25 @@ import java.io.FileInputStream;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Сервис для работы с деревом категорий в формате Excel.
+ * <p>
+ * Этот класс предоставляет методы для экспорта дерева категорий в Excel и импорта дерева категорий из Excel.
+ * Экспорт сохраняет категории в Excel-файл, где каждая строка содержит название категории и её родительскую категорию.
+ * Импорт извлекает данные из Excel и добавляет или обновляет категории в базе данных.
+ * </p>
+ */
 @Service
 @RequiredArgsConstructor
 public class CategoryExcelServiceImpl implements CategoryExcelService {
 
     private final CategoryRepository categoryRepository;
 
+    /**
+     * Экспортирует дерево категорий в файл Excel.
+     *
+     * @return Массив байтов, представляющий файл Excel с деревом категорий.
+     */
     @Override
     public byte[] exportTreeToExcel() {
         try (Workbook workbook = new XSSFWorkbook();
@@ -46,11 +59,15 @@ public class CategoryExcelServiceImpl implements CategoryExcelService {
             workbook.write(outputStream);
             return outputStream.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Ошибка при экспорте дерева категорий в Excel", e);
         }
     }
 
-
+    /**
+     * Импортирует дерево категорий из Excel.
+     *
+     * @param excelFile Путь к Excel-файлу для импорта.
+     */
     @Override
     public void importTreeToExcel(String excelFile) {
         try (FileInputStream inputStream = new FileInputStream(excelFile);
@@ -90,7 +107,8 @@ public class CategoryExcelServiceImpl implements CategoryExcelService {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Ошибка при импорте дерева категорий из Excel", e);
         }
     }
 }
+

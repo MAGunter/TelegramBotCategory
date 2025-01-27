@@ -5,6 +5,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+/**
+ * Класс для отправки сообщений (помогает сделать код более читаемым)
+ */
 @Component
 public class MessageSender {
 

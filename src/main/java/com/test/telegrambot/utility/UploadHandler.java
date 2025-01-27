@@ -14,6 +14,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
+
+/**
+ * Класс для обработки загрузки файла
+ */
 @Component
 @RequiredArgsConstructor
 public class UploadHandler {

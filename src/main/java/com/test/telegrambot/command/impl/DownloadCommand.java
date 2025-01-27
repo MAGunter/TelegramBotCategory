@@ -12,6 +12,14 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.io.ByteArrayInputStream;
 
+/**
+ * Класс для реализации команды скачивания данных о категориях в формате Excel.
+ * <p>
+ * Этот класс обрабатывает команду скачивания дерева категорий и отправляет файл Excel пользователю.
+ * Файл содержит все категории в системе | categories.xlsx.
+ * Если категорий нет, пользователю отправляется сообщение об ошибке.
+ * </p>
+ */
 @Component
 @RequiredArgsConstructor
 public class DownloadCommand implements Command {
@@ -19,6 +27,12 @@ public class DownloadCommand implements Command {
     private final CategoryExcelService categoryExcelService;
     private final MessageSender messageSender;
 
+    /**
+     * Выполняет команду скачивания дерева категорий в формате Excel.
+     *
+     * @param update Обновление, содержащее информацию о сообщении.
+     * @param sender Объект, использующийся для отправки сообщений в чат.
+     */
     @Override
     public void execute(Update update, AbsSender sender) {
         byte[] excelData = categoryExcelService.exportTreeToExcel();
