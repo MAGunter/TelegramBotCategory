@@ -33,10 +33,11 @@ public class UploadHandler {
 
             categoryExcelService.importTreeToExcel(filePath);
 
-            messageSender.sendMsg(chatId, "Файл загружен успешно, результат можете увидеть в базе данных" + "\n" +
-                    "или введите команду /viewTree", sender);
+            messageSender.sendMsg(chatId, "Файл загружен успешно, результат можете увидеть в базе данных." + "\n" +
+                    "Или вместо этого введите команду /viewTree", sender);
         } catch (Exception e) {
-            messageSender.sendMsg(chatId, "Ошибка при обработке файла, убедитесь что ввели команду корректно", sender);
+            messageSender.sendMsg(chatId, "Ошибка при обработке файла, убедитесь что ввели команду корректно" + "\n" +
+                    "или что дерево категорий пусто", sender);
         }
     }
 
