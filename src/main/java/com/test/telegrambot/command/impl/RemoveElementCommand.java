@@ -1,8 +1,10 @@
 package com.test.telegrambot.command.impl;
 
 import com.test.telegrambot.command.Command;
+import com.test.telegrambot.entity.Role;
 import com.test.telegrambot.service.CategoryService;
 import com.test.telegrambot.utility.MessageSender;
+import com.test.telegrambot.utility.SecurityCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -22,6 +24,7 @@ public class RemoveElementCommand implements Command {
 
     private final CategoryService categoryService;
     private final MessageSender messageSender;
+    private final SecurityCheck securityCheck;
 
     /**
      * Выполняет команду удаления элемента (категории) из дерева категорий.
@@ -36,6 +39,12 @@ public class RemoveElementCommand implements Command {
         String parameters = message.replace("/removeElement ", "").trim();
         String defaultMessage = "Вы неверно ввели команду или название категории. " +
                 "Пример: /removeElement <категория>";
+
+        if(!securityCheck.hasRole(Role.ADMIN, update)){
+            messageSender.sendMsg(update.getMessage().getChatId().toString(),
+                    "У вас нет прав для выполнения данной команды", sender);
+            return;
+        }
 
         String response;
         if(parameters.isEmpty() || message.equals("/removeElement")){

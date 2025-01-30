@@ -1,4 +1,4 @@
-package com.test.telegrambot.utils;
+package com.test.telegrambot.utility;
 
 
 import com.test.telegrambot.entity.Category;

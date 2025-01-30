@@ -1,7 +1,9 @@
 package com.test.telegrambot.command.impl;
 
 import com.test.telegrambot.command.Command;
+import com.test.telegrambot.entity.Role;
 import com.test.telegrambot.utility.MessageSender;
+import com.test.telegrambot.utility.SecurityCheck;
 import com.test.telegrambot.utility.UploadHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,7 @@ public class UploadCommand implements Command {
 
     private final UploadHandler uploadHandler;
     private final MessageSender messageSender;
+    private final SecurityCheck securityCheck;
 
     /**
      * Выполняет команду загрузки файла с деревом категорий.
@@ -32,6 +35,13 @@ public class UploadCommand implements Command {
      */
     @Override
     public void execute(Update update, AbsSender sender) {
+
+        if(!securityCheck.hasRole(Role.ADMIN, update)){
+            messageSender.sendMsg(update.getMessage().getChatId().toString(),
+                    "У вас нет прав для выполнения данной команды", sender);
+            return;
+        }
+
         if (update.getMessage().hasDocument()) {
             uploadHandler.handleFileUpload(update, sender);
         } else {

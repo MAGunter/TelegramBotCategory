@@ -3,7 +3,7 @@ package com.test.telegrambot.service;
 import com.test.telegrambot.entity.Category;
 import com.test.telegrambot.repository.CategoryRepository;
 import com.test.telegrambot.service.impl.CategoryExcelServiceImpl;
-import com.test.telegrambot.utils.DataUtils;
+import com.test.telegrambot.utility.DataUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;

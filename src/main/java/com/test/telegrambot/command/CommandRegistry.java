@@ -33,6 +33,10 @@ public class CommandRegistry {
                 commands.put("/download", command);
             } else if(command instanceof UploadCommand){
                 commands.put("/upload", command);
+            } else if(command instanceof LoginCommand){
+                commands.put("/login", command);
+            } else if(command instanceof StartCommand){
+                commands.put("/start", command);
             }
         }
     }

@@ -3,7 +3,7 @@ package com.test.telegrambot.service;
 import com.test.telegrambot.entity.Category;
 import com.test.telegrambot.repository.CategoryRepository;
 import com.test.telegrambot.service.impl.CategoryServiceImpl;
-import com.test.telegrambot.utils.DataUtils;
+import com.test.telegrambot.utility.DataUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

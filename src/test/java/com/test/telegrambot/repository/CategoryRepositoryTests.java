@@ -1,7 +1,7 @@
 package com.test.telegrambot.repository;
 
 import com.test.telegrambot.entity.Category;
-import com.test.telegrambot.utils.DataUtils;
+import com.test.telegrambot.utility.DataUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

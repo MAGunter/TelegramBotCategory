@@ -30,6 +30,9 @@ public class ViewTreeCommand implements Command {
      */
     @Override
     public void execute(Update update, AbsSender sender) {
+        if(update.getMessage() == null){
+            return;
+        }
         String chatId = update.getMessage().getChatId().toString();
         String message = categoryService.viewTree();
 

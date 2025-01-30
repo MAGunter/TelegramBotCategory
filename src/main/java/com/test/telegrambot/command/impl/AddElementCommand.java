@@ -1,8 +1,10 @@
 package com.test.telegrambot.command.impl;
 
 import com.test.telegrambot.command.Command;
+import com.test.telegrambot.entity.Role;
 import com.test.telegrambot.service.CategoryService;
 import com.test.telegrambot.utility.MessageSender;
+import com.test.telegrambot.utility.SecurityCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -30,6 +32,7 @@ public class AddElementCommand implements Command {
 
     private final CategoryService categoryService;
     private final MessageSender messageSender;
+    private final SecurityCheck securityCheck;
 
     /**
      * Выполняет команду добавления категории или подкатегории.
@@ -39,6 +42,12 @@ public class AddElementCommand implements Command {
      */
     @Override
     public void execute(Update update, AbsSender sender){
+
+        if(!securityCheck.hasRole(Role.ADMIN, update)){
+            messageSender.sendMsg(update.getMessage().getChatId().toString(),
+                    "У вас нет прав для выполнения данной команды", sender);
+            return;
+        }
 
         String chatId = update.getMessage().getChatId().toString();
         String message = update.getMessage().getText();
