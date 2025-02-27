@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AddElementCommandTests {
+class AddElementCommandTests {
 
     @Mock
     private CategoryService categoryService;
@@ -34,12 +34,13 @@ public class AddElementCommandTests {
 
     @Test
     @DisplayName("Добавление элемента с ролью администратора")
-    public void givenAdminRole_whenAddElement_thenElementAdded() {
+    void givenAdminRole_whenAddElement_thenElementAdded() {
         // given
         String chatId = "12345";
         String categoryName = "Electronics";
         Update update = UpdateMessage.createUpdateWithMessage("/addElement " + categoryName);
-        doReturn(true).when(securityCheck).hasRole(eq(Role.ADMIN), eq(update));
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
+        when(securityCheck.hasRole(Role.ADMIN, update)).thenReturn(true);
         doReturn("Категория " + categoryName + " успешно добавлена").when(categoryService).addCategory(categoryName);
 
         // when
@@ -52,12 +53,13 @@ public class AddElementCommandTests {
 
     @Test
     @DisplayName("Добавление элемента с неверной командой")
-    public void givenInvalidCommand_whenAddElement_thenErrorMessage() {
+    void givenInvalidCommand_whenAddElement_thenErrorMessage() {
         // given
         String chatId = "12345";
         String invalidCommand = "/addElement";
         Update update = UpdateMessage.createUpdateWithMessage(invalidCommand);
-        doReturn(true).when(securityCheck).hasRole(eq(Role.ADMIN), eq(update));
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
+        doReturn(true).when(securityCheck).hasRole(Role.ADMIN, update);
 
         // when
         AbsSender sender = mock(AbsSender.class);

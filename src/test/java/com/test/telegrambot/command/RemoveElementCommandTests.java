@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RemoveElementCommandTests {
+class RemoveElementCommandTests {
 
     @Mock
     private CategoryService categoryService;
@@ -34,11 +34,12 @@ public class RemoveElementCommandTests {
 
     @Test
     @DisplayName("Удаление элемента с ролью администратора")
-    public void givenAdminRole_whenRemoveElement_thenElementRemoved() {
+    void givenAdminRole_whenRemoveElement_thenElementRemoved() {
         // given
         String chatId = "12345";
         String categoryName = "Electronics";
         Update update = UpdateMessage.createUpdateWithMessage("/removeElement " + categoryName);
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
         doReturn(true).when(securityCheck).hasRole(eq(Role.ADMIN), eq(update));
         doReturn("Категория " + categoryName + " успешно удалена").when(categoryService).removeCategory(categoryName);
 
@@ -52,11 +53,12 @@ public class RemoveElementCommandTests {
 
     @Test
     @DisplayName("Удаление элемента без роли администратора")
-    public void givenNoAdminRole_whenRemoveElement_thenAccessDenied() {
+    void givenNoAdminRole_whenRemoveElement_thenAccessDenied() {
         // given
         String chatId = "12345";
         String categoryName = "Electronics";
         Update update = UpdateMessage.createUpdateWithMessage("/removeElement " + categoryName);
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
         doReturn(false).when(securityCheck).hasRole(eq(Role.ADMIN), eq(update));
 
         // when
@@ -69,11 +71,12 @@ public class RemoveElementCommandTests {
 
     @Test
     @DisplayName("Удаление элемента с неверной командой")
-    public void givenInvalidCommand_whenRemoveElement_thenErrorMessage() {
+    void givenInvalidCommand_whenRemoveElement_thenErrorMessage() {
         // given
         String chatId = "12345";
         String invalidCommand = "/removeElement";
         Update update = UpdateMessage.createUpdateWithMessage(invalidCommand);
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
         doReturn(true).when(securityCheck).hasRole(eq(Role.ADMIN), eq(update));
 
         // when

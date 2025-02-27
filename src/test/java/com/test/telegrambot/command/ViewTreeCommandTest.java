@@ -34,7 +34,7 @@ class ViewTreeCommandTest {
 
     @Test
     @DisplayName("Успешное получение дерева категорий")
-    public void execute_whenTreeExists_thenSendTreeMessage() {
+    void execute_whenTreeExists_thenSendTreeMessage() {
         // given
         given(update.getMessage()).willReturn(message);
         given(message.getChatId()).willReturn(1L);
@@ -49,7 +49,7 @@ class ViewTreeCommandTest {
 
     @Test
     @DisplayName("Дерево категорий пустое")
-    public void execute_whenTreeIsEmpty_thenSendEmptyMessage() {
+    void execute_whenTreeIsEmpty_thenSendEmptyMessage() {
         // given
         given(update.getMessage()).willReturn(message);
         given(message.getChatId()).willReturn(1L);
@@ -64,7 +64,7 @@ class ViewTreeCommandTest {
 
     @Test
     @DisplayName("Обновление не содержит сообщение")
-    public void execute_whenUpdateHasNoMessage_thenDoNothing() {
+    void execute_whenUpdateHasNoMessage_thenDoNothing() {
         // given
         given(update.getMessage()).willReturn(null);
 

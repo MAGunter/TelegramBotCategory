@@ -71,7 +71,7 @@ public class CategoryServiceImplTests {
         String response = serviceUnderTest.addCategory(electronics.getName(), laptops.getName());
 
         // then
-        assertThat(response).isEqualTo("Категория " + laptops.getName() + " добавлена, его родитель " + electronics.getName());
+        assertThat(response).isEqualTo("Категория " + laptops.getName() + " добавлена, её родитель " + electronics.getName());
         verify(categoryRepository, times(1)).save(electronics);
     }
 

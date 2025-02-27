@@ -9,7 +9,6 @@ import com.test.telegrambot.utility.UpdateMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,10 +19,11 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginCommandTests {
+class LoginCommandTests {
 
     @Mock
     private MessageSender messageSender;
@@ -39,21 +39,21 @@ public class LoginCommandTests {
 
     @Test
     @DisplayName("Успешный вход как администратор")
-    public void givenCorrectCredentials_whenLogin_thenAdminLoggedIn() {
+    void givenCorrectCredentials_whenLogin_thenAdminLoggedIn() {
         // given
         String chatId = "12345";
         String username = "admin";
         String password = "password";
         User user = new User();
-        user.setChatId(chatId);
         user.setName(username);
         user.setPassword(password);
         user.setRole(Role.USER);
-        BDDMockito.given(userRepository.findByName(username)).willReturn(Optional.of(user));
-        BDDMockito.given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
+        given(userRepository.findByName(username)).willReturn(Optional.of(user));
+        given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
 
         // when
         Update update = UpdateMessage.createUpdateWithMessage("/login " + username + " " + password);
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
         AbsSender sender = mock(AbsSender.class);
         loginCommand.execute(update, sender);
 
@@ -64,21 +64,21 @@ public class LoginCommandTests {
 
     @Test
     @DisplayName("Неверный пароль при входе")
-    public void givenIncorrectPassword_whenLogin_thenErrorMessage() {
+    void givenIncorrectPassword_whenLogin_thenErrorMessage() {
         // given
         String chatId = "12345";
         String username = "admin";
         String password = "wrongPassword";
         User user = new User();
-        user.setChatId(chatId);
         user.setName(username);
-        user.setPassword(password);
+        user.setPassword("correctPassword");
         user.setRole(Role.USER);
-        BDDMockito.given(userRepository.findByName(username)).willReturn(Optional.of(user));
-        BDDMockito.given(passwordEncoder.matches(password, user.getPassword())).willReturn(false);
+        given(userRepository.findByName(username)).willReturn(Optional.of(user));
+        given(passwordEncoder.matches(password, user.getPassword())).willReturn(false);
 
         // when
         Update update = UpdateMessage.createUpdateWithMessage("/login " + username + " " + password);
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
         AbsSender sender = mock(AbsSender.class);
         loginCommand.execute(update, sender);
 
@@ -88,15 +88,16 @@ public class LoginCommandTests {
 
     @Test
     @DisplayName("Пользователь не найден при входе")
-    public void givenNonExistentUser_whenLogin_thenUserNotFoundMessage() {
+    void givenNonExistentUser_whenLogin_thenUserNotFoundMessage() {
         // given
         String chatId = "12345";
         String username = "admin";
         String password = "password";
-        BDDMockito.given(userRepository.findByName(username)).willReturn(Optional.empty());
+        given(userRepository.findByName(username)).willReturn(Optional.empty());
 
         // when
         Update update = UpdateMessage.createUpdateWithMessage("/login " + username + " " + password);
+        when(update.getMessage().getChatId()).thenReturn(Long.parseLong(chatId));
         AbsSender sender = mock(AbsSender.class);
         loginCommand.execute(update, sender);
 
